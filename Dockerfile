@@ -11,3 +11,4 @@ ADD ./init_superuser.sh /init_superuser.sh
 ADD ./allow_all_access.sh /allow_all_access.sh
 RUN chmod +x /*.sh
 EXPOSE 5432
+CMD ["su", "postgres", "--command", "/usr/lib/postgresql/9.3/bin/postgres -D /data/main -c config_file=/data/postgresql.conf"]
