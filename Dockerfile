@@ -1,9 +1,8 @@
 # Postgres 9.3
 
-# http://amattn.com/2013/09/19/tutorial_postgresql_usage_examples_with_docker.html
-FROM amattn/postgresql-9.3.0
+# information from: http://amattn.com/2013/09/19/tutorial_postgresql_usage_examples_with_docker.html
+FROM tilljoel/ubuntu-base
 MAINTAINER Joel Larsson, tilljoel@gmail.com
-
 RUN mkdir /root/postgresdata
 ADD ./init_postgres.sh /init_postgres.sh
 ADD ./init_project.sh /init_project.sh
