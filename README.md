@@ -19,23 +19,23 @@ EXPOSE 5432
 # Prepare installation
 
 ```bash
-sudo docker run -v="/root/postgresdata":"/data" tilljoel/postgresql-9.3.0 /bin/bash -c ./init_postgres.sh
-sudo docker run -e SUPERUSER_USER=joel -e SUPERUSER_PASS=secret -v="/root/postgresdata":"/data" tilljoel/postgresql-9.3.0 /bin/bash -c ./init_superuser.sh
-sudo docker run -e SUPERUSER_USER=joel -e SUPERUSER_PASS=secret -v="/root/postgresdata":"/data" tilljoel/postgresql-9.3.0 /bin/bash -c ./allow_all_access.sh
+mkdir /root/postgresdata
+sudo docker run -v="/root/postgresdata":"/data" tilljoel/postgres-9.3.0 /bin/bash -c ./init_postgres.sh
+sudo docker run -e SUPERUSER_USER=joel -e SUPERUSER_PASS=secret -v="/root/postgresdata":"/data" tilljoel/postgres-9.3.0 /bin/bash -c ./init_superuser.sh
+sudo docker run -e SUPERUSER_USER=joel -e SUPERUSER_PASS=secret -v="/root/postgresdata":"/data" tilljoel/postgres-9.3.0 /bin/bash -c ./allow_all_access.sh
 ```
 
 # Start postgres
 
 ```bash
-CONTAINER_ID=$(docker run -name postgres -v="/root/postgresdata":"/data" -d tilljoel/postgresql-9.3.0 su postgres --command "/usr/lib/postgresql/9.3/bin/postgres -D /data/main -c config_file=/data/postgresql.conf")
-CONTAINER_IP=$(docker inspect $CONTAINER_ID | grep IPAddress | awk '{ print $2 }' | tr -d ',"')
+CONTAINER_ID=$(docker run -name postgres -v="/root/postgresdata":"/data" -d tilljoel/postgres-9.3.0 su postgres --command "/usr/lib/postgresql/9.3/bin/postgres -D /data/main -c config_file=/data/postgresql.conf")
 ```
 
 # New project (user+database)
 
-First fetch the 
+
 ```bash
-# Make sure CONTAINER_IP is set and all other variables
-sudo docker run -e SUPERUSER_USER=joel -e SUPERUSER_PASS=secret -e PG_USER=tilljoel -e PG_PASS=secret -e PG_DATABASE=tilljoeldb -e PG_HOST=CONTAINER_IP -e PG_PORT=5432 -v="/root/postgresdata":"/data" tilljoel/postgresql-9.3.0 /bin/bash -c ./init_project.sh
+CONTAINER_IP=$(docker inspect $CONTAINER_ID | grep IPAddress | awk '{ print $2 }' | tr -d ',"')
+sudo docker run -e SUPERUSER_USER=joel -e SUPERUSER_PASS=secret -e PG_USER=tilljoel -e PG_PASS=secret -e PG_DATABASE=tilljoeldb -e PG_HOST=CONTAINER_IP -e PG_PORT=5432 -v="/root/postgresdata":"/data" tilljoel/postgres-9.3.0 /bin/bash -c ./init_project.sh
 ```
 
