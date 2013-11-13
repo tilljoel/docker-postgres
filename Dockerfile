@@ -4,7 +4,7 @@
 FROM tilljoel/ubuntu-base
 MAINTAINER Joel Larsson, tilljoel@gmail.com
 
-RUN -get update
+RUN apt-get update
 RUN apt-get install -y wget
 RUN wget -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | apt-key add -
 RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main" > /etc/apt/sources.list.d/pgdg.list
